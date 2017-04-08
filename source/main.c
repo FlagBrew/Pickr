@@ -4,16 +4,19 @@
 #include <sftd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 sftd_font *font40, *font18;
+sf2d_texture *_lives;
+
 int _time;
 int diff;
 int stages;
+int lives;
 bool pattern[16];
 u32 color[3];
 
 void exitServices() {
+	sf2d_free_texture(_lives);
 	sftd_free_font(font18);
 	sftd_free_font(font40);
 	
@@ -22,6 +25,13 @@ void exitServices() {
 	romfsExit();
 	sftd_fini();
 	sf2d_fini();
+}
+
+void initVars() {
+	lives = 5;
+	_time = 320;
+	diff = 10;
+	stages = 0;	
 }
 
 void initServices() {
@@ -34,14 +44,13 @@ void initServices() {
 	sdmcInit();
 	romfsInit();
 	
+	_lives = sfil_load_PNG_file("romfs:/lives.png", SF2D_PLACE_RAM);
 	font40 = sftd_load_font_file("romfs:/font.otf");
 	font18 = sftd_load_font_file("romfs:/font.otf");
 	sftd_draw_text(font40, 0, 0, RGBA8(0, 0, 0, 0), 40, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890:-.'!?()\"end");
 	sftd_draw_text(font18, 0, 0, RGBA8(0, 0, 0, 0), 18, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890:-.'!?()\"end");
-
-	_time = 320;
-	diff = 10;
-	stages = 0;
+	
+	initVars();
 }
 
 void fillPattern() {
@@ -91,12 +100,18 @@ void level() {
 	_time = 320;
 	fillPattern();
 	
-	while(aptMainLoop() && _time > 0) {
+	while(aptMainLoop() && _time > 0 && lives > 0) {
 		hidScanInput();
 		touchPosition touch;
 		hidTouchRead(&touch);
 		
 		sf2d_start_frame(GFX_TOP, GFX_LEFT);
+			for (unsigned int i = 0; i < 5; i++) {
+				if (i < lives)
+					sf2d_draw_texture(_lives, 2 + i*27, 215);
+				else
+					sf2d_draw_texture_blend(_lives, 2 + i*27, 215, RGBA8(50,50,50,200));
+			}
 		sf2d_end_frame();
 		
 		sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
@@ -113,13 +128,17 @@ void level() {
 		sf2d_end_frame();
 		sf2d_swapbuffers();
 		
-		if (hidKeysHeld() & KEY_TOUCH) {
+		if (hidKeysDown() & KEY_TOUCH) {
 			int x_start, y_start = 21;
 			for (unsigned int i = 0; i < 4; i++) {
 				x_start = 65;
 				for (unsigned int j = 0; j < 4; j++) {
-					if ((touch.px > x_start) && (touch.px < (x_start + 45)) && (touch.py > y_start) && (touch.py < (y_start + 45)) && pattern[i*4+j])
-						win = true;
+					if ((touch.px > x_start) && (touch.px < (x_start + 45)) && (touch.py > y_start) && (touch.py < (y_start + 45))) {
+						if (pattern[i*4+j])
+							win = true;
+						else
+							lives--;
+					}
 					x_start += 48;
 				}
 				y_start += 48;
@@ -147,6 +166,7 @@ int main() {
 		if (hidKeysDown() & KEY_A) {
 			level();
 			endgame();
+			initVars();
 		}
 		
 		menu_start();
