@@ -188,7 +188,7 @@ void level() {
 		}
 		
 		if (win) {
-			if (++stages % 5 == 0 && lives < 10) 
+			if (++stages % 10 == 0 && lives < 10)
 				lives++;
 			updatediff();
 			maxStages = (stages >= maxStages) ? stages : maxStages;

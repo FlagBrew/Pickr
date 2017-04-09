@@ -6,6 +6,6 @@ This completely is a **just for fun** project; I actually decided to challenge m
 
 # Credits
 
-Sean M. Tracey, for the idea
-Madebyoliver, for the heart icon
-[Cocogoose font](http://www.zetafonts.com/collection/308) by Zetafonts.
+* Sean M. Tracey, for the idea
+* Madebyoliver, for the heart icon
+* [Cocogoose font](http://www.zetafonts.com/collection/308) by Zetafonts.
