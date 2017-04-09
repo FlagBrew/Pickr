@@ -7,10 +7,10 @@
 
 sftd_font *font40, *font18, *font12;
 sf2d_texture *_lives, *_lives16p;
-
+char* ver = "v1.0";
 int _time, diff, stages, maxStages, lives, matches;
 bool pattern[16];
-int color[3];
+u32 color[3];
 
 void exitServices() {
 	sf2d_free_texture(_lives16p);
@@ -19,7 +19,6 @@ void exitServices() {
 	sftd_free_font(font18);
 	sftd_free_font(font40);
 
-	sdmcExit();
 	romfsExit();
 	sftd_fini();
 	sf2d_fini();
@@ -32,6 +31,19 @@ void initVars() {
 	stages = 0;	
 }
 
+void updatediff() {
+	diff = 10;
+	/*switch (stages) {
+		case 10: diff = 9; break;
+		case 30: diff = 8; break;
+		case 50: diff = 7; break;
+		case 70: diff = 6; break;
+		case 100: diff = 5; break;
+		case 150: diff = 4; break;
+		case 200: diff = 3; break;
+	}*/
+}
+
 void initServices() {
 	srand(time(NULL));
 	
@@ -39,7 +51,6 @@ void initServices() {
 	sftd_init();
 	sf2d_set_clear_color(RGBA8(255, 255, 255, 255));
 	sf2d_set_vblank_wait(1);
-	sdmcInit();
 	romfsInit();
 	
 	sf2d_start_frame(GFX_TOP, GFX_LEFT);
@@ -72,8 +83,10 @@ void fillPattern() {
 }
 
 void endgame() {
-	char tmp[24];
+	char tmp[26], tmp2[20], tmp3[20];
 	snprintf(tmp, 24, "Levels completed: %d!", stages);
+	snprintf(tmp2, 20, "Best score: %d", maxStages);
+	snprintf(tmp3, 20, "Games played: %d", matches);
 	
 	while(aptMainLoop()) {
 		hidScanInput();
@@ -84,28 +97,31 @@ void endgame() {
 		sf2d_start_frame(GFX_TOP, GFX_LEFT);
 			sftd_draw_text(font40, (400 - sftd_get_text_width(font40, 40, "End game")) / 2, 80, RGBA8(0,0,0,255), 40, "End game!");
 			sftd_draw_text(font18, (400 - sftd_get_text_width(font18, 18, tmp)) / 2, 136, RGBA8(0,0,0,255), 18, tmp);
-			sftd_draw_text(font12, (400 - sftd_get_text_width(font12, 12, "Press A to restart")) / 2, 165, RGBA8(200,0,0,200), 12, "Press A to restart");
+			sftd_draw_text(font12, (400 - sftd_get_text_width(font12, 12, "Press A to restart")) / 2, 170, RGBA8(200,0,0,200), 12, "Press A to restart");
 		sf2d_end_frame();
 		
 		sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
-			sftd_draw_textf(font12, 3, 2, RGBA8(0,0,0,200), 12, "Best score: %d", maxStages);
-			sftd_draw_textf(font12, 3, 18, RGBA8(0,0,0,200), 12, "Games played: %d", matches);
+			sftd_draw_text(font18, (320 - sftd_get_text_width(font18, 18, tmp3)) / 2, 82, RGBA8(0,0,0,200), 18, tmp2);
+			sftd_draw_text(font18, (320 - sftd_get_text_width(font18, 18, tmp3)) / 2, 106, RGBA8(0,0,0,200), 18, tmp3);
 		sf2d_end_frame();
 		sf2d_swapbuffers();	
 	}
 }
 
 void menu_start() {
+	char *instr = "Try to pick the different color square!";
 	sf2d_start_frame(GFX_TOP, GFX_LEFT);
 		sftd_draw_text(font40, (400 - sftd_get_text_width(font40, 40, "PICKR")) / 2, 80, RGBA8(0,0,0,255), 40, "PICKR");
-		sftd_draw_text(font18, (400 - sftd_get_text_width(font18, 18, "Press A to start a new game")) / 2, 136, RGBA8(0,0,0,200), 18, "Press A to start a new game");
-		sftd_draw_text(font12, (400 - sftd_get_text_width(font12, 12, "Press B to exit")) / 2, 165, RGBA8(0,0,0,200), 12, "Press B to exit");
+		sftd_draw_text(font18, (400 - sftd_get_text_width(font18, 18, "Press A to start a new game")) / 2, 135, RGBA8(0,0,0,200), 18, "Press A to start a new game");
+		sftd_draw_text(font12, (400 - sftd_get_text_width(font12, 12, "Press B to exit")) / 2, 170, RGBA8(0,0,0,200), 12, "Press B to exit");
+		sftd_draw_text(font12, 398 - sftd_get_text_width(font12, 12, ver), 225, RGBA8(0,0,0,200), 12, ver);
 	sf2d_end_frame();
 	
 	sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
-		sftd_draw_text(font12, 2, 208, RGBA8(0,0,0,150), 12, "Based on Sean M. Tracey's idea");
-		sftd_draw_text(font12, 2, 224, RGBA8(0,0,0,180), 12, "Made with       by Bernardo Giordano");
-		sf2d_draw_texture(_lives16p, 60, 223);
+		sftd_draw_text(font12, (320 - sftd_get_text_width(font12, 12, instr)) / 2, 20, RGBA8(200,0,0,200), 12, instr);
+		sftd_draw_text(font12, 2, 207, RGBA8(0,0,0,150), 12, "Based on Sean M. Tracey's idea");
+		sftd_draw_text(font12, 2, 223, RGBA8(0,0,0,180), 12, "Made with       by Bernardo Giordano");
+		sf2d_draw_texture(_lives16p, 60, 222);
 	sf2d_end_frame();
 	sf2d_swapbuffers();
 }
@@ -113,10 +129,12 @@ void menu_start() {
 void level() {
 	int x, y;
 	bool win = false;
+	char stagestr[10];
+	snprintf(stagestr, 10, "Level %d", stages);
 	
 	_time = 320;
-	diff = (rand() % 2) ? diff : -diff;
 	fillPattern();
+	diff = (rand() % 2) ? diff : -diff;
 	
 	while(aptMainLoop() && _time > 0 && lives > 0) {
 		hidScanInput();
@@ -141,12 +159,13 @@ void level() {
 		}
 		
 		sf2d_start_frame(GFX_TOP, GFX_LEFT);
-			for (unsigned int i = 0; i < 5; i++) {
+			for (unsigned int i = 0, max = (lives < 5) ? 5 : lives; i < max; i++) {
 				if (i < lives)
-					sf2d_draw_texture(_lives, 2 + i*27, 215);
+					sf2d_draw_texture(_lives, 3 + i*27, 215);
 				else
-					sf2d_draw_texture_blend(_lives, 2 + i*27, 215, RGBA8(50,50,50,200));
+					sf2d_draw_texture_blend(_lives, 3 + i*27, 215, RGBA8(50,50,50,200));
 			}
+			sftd_draw_text(font18, 396 - sftd_get_text_width(font18, 18, stagestr), 218, RGBA8(200,0,0,200), 18, stagestr);
 		sf2d_end_frame();
 		
 		sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
@@ -162,16 +181,16 @@ void level() {
 			sf2d_draw_rectangle(0, 230, _time, 10, (_time > 100) ? RGBA8(0,255,0,255) : RGBA8(255,0,0,255));
 		sf2d_end_frame();
 		sf2d_swapbuffers();
-		
-		_time--;
-		if (_time == 0 && lives > 0) {
+
+		if (--_time == 0 && lives > 0) {
 			_time = 320;
 			lives--;
 		}
 		
 		if (win) {
-			diff = 10;
-			stages++;
+			if (++stages % 5 == 0 && lives < 10) 
+				lives++;
+			updatediff();
 			maxStages = (stages >= maxStages) ? stages : maxStages;
 			level();
 		}
