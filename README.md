@@ -4,7 +4,11 @@ After viewing one of the latest DONG's by Vsauce guys, I decided to port [Sean M
 
 This completely is a **just for fun** project; I actually decided to challenge myself to complete it within a couple hours maximum. 
 
-# Credits
+## Screenshots
+
+![](assets/screen1.png)
+
+## Credits
 
 * Sean M. Tracey, for the idea
 * Madebyoliver, for the heart icon
