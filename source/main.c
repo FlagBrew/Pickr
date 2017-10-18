@@ -1,7 +1,7 @@
 #include <3ds.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "pp2d/pp2d/pp2d.h"
+#include "pp2d/pp2d.h"
 
 #define TEXTURE_LIVES_BIG 1
 #define TEXTURE_LIVES_SMALL 2
@@ -60,12 +60,12 @@ void endgame() {
 	while(aptMainLoop() && !(hidKeysDown() & KEY_A)) {
 		hidScanInput();
 		
-		pp2d_begin_draw(GFX_TOP);
+		pp2d_begin_draw(GFX_TOP, GFX_LEFT);
 			pp2d_draw_text_center(GFX_TOP, 80, 1.0f, 1.0f, RGBA8(0,0,0,255), "End game!");
 			pp2d_draw_text_center(GFX_TOP, 136, 0.7f, 0.7f, RGBA8(0,0,0,255), tmp);
 			pp2d_draw_text_center(GFX_TOP, 170, 0.6f, 0.6f, RGBA8(200,0,0,200), "Press A to restart");
 			
-			pp2d_draw_on(GFX_BOTTOM);
+			pp2d_draw_on(GFX_BOTTOM, GFX_LEFT);
 			
 			pp2d_draw_text_center(GFX_BOTTOM, 82, 0.7f, 0.7f, RGBA8(0,0,0,200), tmp2);
 			pp2d_draw_text_center(GFX_BOTTOM, 106, 0.7f, 0.7f, RGBA8(0,0,0,200), tmp3);
@@ -77,14 +77,14 @@ void menu_start() {
 	char ver[10];
 	sprintf(ver, "v%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
 	
-	pp2d_begin_draw(GFX_TOP);
+	pp2d_begin_draw(GFX_TOP, GFX_LEFT);
 		pp2d_draw_text_center(GFX_TOP, 70, 1.0f, 1.0f, RGBA8(0,0,0,255), "PICKR");
 		pp2d_draw_text_center(GFX_TOP, 107, 0.65f, 0.65f, RGBA8(200,0,0,200), "Try to pick the different color square!");
 		pp2d_draw_text_center(GFX_TOP, 150, 0.6f, 0.6f, RGBA8(0,0,0,200), "Press A to start a new game");
 		pp2d_draw_text_center(GFX_TOP, 170, 0.5f, 0.5f, RGBA8(0,0,0,200), "Press B to exit");
 		pp2d_draw_text(398 - pp2d_get_text_width(ver, 0.45f, 0.45f), 225, 0.45f, 0.45f, RGBA8(0,0,0,200), ver);
 		
-		pp2d_draw_on(GFX_BOTTOM);
+		pp2d_draw_on(GFX_BOTTOM, GFX_LEFT);
 		pp2d_draw_text(3, 207, 0.5f, 0.5f, RGBA8(0,0,0,150), "Based on Sean M. Tracey's idea");
 		pp2d_draw_text(3, 222, 0.5f, 0.5f, RGBA8(0,0,0,180), "Made with      by Bernardo Giordano");
 		pp2d_draw_texture(TEXTURE_LIVES_SMALL, 70, 222);
@@ -123,7 +123,7 @@ void level() {
 			}
 		}
 		
-		pp2d_begin_draw(GFX_TOP);
+		pp2d_begin_draw(GFX_TOP, GFX_LEFT);
 			for (unsigned int i = 0, max = (lives < 5) ? 5 : lives; i < max; i++) {
 				if (i < (unsigned int)lives)
 					pp2d_draw_texture(TEXTURE_LIVES_BIG, 3 + i*27, 215);
@@ -132,7 +132,7 @@ void level() {
 			}
 			pp2d_draw_text(396 - pp2d_get_text_width(stagestr, 0.7f, 0.7f), 218, 0.7f, 0.7f, RGBA8(200,0,0,200), stagestr);
 		
-			pp2d_draw_on(GFX_BOTTOM);
+			pp2d_draw_on(GFX_BOTTOM, GFX_LEFT);
 			y = 21;
 			for (unsigned int i = 0; i < 4; i++) {
 				x = 65;
