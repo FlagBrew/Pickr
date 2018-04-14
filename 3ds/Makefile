@@ -10,12 +10,12 @@ TOPDIR ?= $(CURDIR)
 include $(DEVKITARM)/3ds_rules
 
 # Your values.
-APP_TITLE           :=	Pickr3DS
+APP_TITLE           :=	Pickr
 APP_DESCRIPTION     :=	Pickr port for 3DS
 APP_AUTHOR          :=	Bernardo Giordano
 
 TARGET              :=	$(subst $e ,_,$(notdir $(APP_TITLE)))
-OUTDIR              :=	output
+OUTDIR              :=	out
 BUILD               :=	build
 SOURCES             :=	source/pp2d source
 INCLUDES            :=	include
@@ -42,8 +42,6 @@ PRODUCT_CODE        :=	CTR-HB-PICK
 VERSION_MAJOR := 1
 VERSION_MINOR := 1
 VERSION_MICRO := 0
-
-ROSALINA := 0
 
 # Don't really need to change this
 ICON_FLAGS          :=	nosavebackups,visible

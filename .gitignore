@@ -1,5 +1,5 @@
-build/
-output/
-*.elf
-*.smdh
-*.3dsx
+3ds/build/
+3ds/out/
+switch/build/
+switch/out/
+release/
