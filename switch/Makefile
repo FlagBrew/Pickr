@@ -30,8 +30,8 @@ include $(DEVKITPRO)/libnx/switch_rules
 #     - <libnx folder>/default_icon.jpg
 #---------------------------------------------------------------------------------
 VERSION_MAJOR := 1
-VERSION_MINOR := 0
-VERSION_MICRO := 0
+VERSION_MINOR := 1
+VERSION_MICRO := 1
 
 APP_TITLE	:=	Pickr
 APP_AUTHOR	:=	Bernardo Giordano

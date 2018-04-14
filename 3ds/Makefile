@@ -41,7 +41,7 @@ PRODUCT_CODE        :=	CTR-HB-PICK
 
 VERSION_MAJOR := 1
 VERSION_MINOR := 1
-VERSION_MICRO := 0
+VERSION_MICRO := 1
 
 # Don't really need to change this
 ICON_FLAGS          :=	nosavebackups,visible
