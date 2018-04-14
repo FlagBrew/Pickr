@@ -11,7 +11,7 @@ This completely is a **just for fun** project; I actually decided to challenge m
 
 ## Screenshots
 
-![](assets/screen1.png)
+![](3ds/assets/screen1.png)
 
 ## Credits
 
