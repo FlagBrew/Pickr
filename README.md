@@ -11,7 +11,7 @@ This completely is a **just for fun** project; I actually decided to challenge m
 
 ## Screenshots
 
-![](3ds/assets/screen1.png)
+![](https://i.imgur.com/3bX7PkJ.png)
 
 ## Credits
 
